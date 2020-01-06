@@ -24,6 +24,10 @@ inputs:
     description: 'Which tool to check the HelmRelease with'
     default: 'kubeval'
     required: false
+  policyDir:
+    description: 'Directory containing Rego policies for conftest'
+    default: 'policy'
+    required: false
 outputs:
   numFilesTested:
     description: The number of HelmRelease files which were tested
@@ -37,3 +41,4 @@ runs:
     - ${{ inputs.kubernetesVersion }}
     - ${{ inputs.helmVersion }}
     - ${{ inputs.action }}
+    - ${{ inputs.policyDir }}
