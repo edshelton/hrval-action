@@ -7,6 +7,7 @@ IGNORE_VALUES=${2}
 KUBE_VER=${3-master}
 HELM_VER=${4-v2}
 ACTION=${5-kubeval}
+POLICY_DIR=${6-policy}
 
 if test ! -f "${HELM_RELEASE}"; then
   echo "\"${HELM_RELEASE}\" Helm release file not found!"
@@ -116,7 +117,7 @@ function action {
   if [[ "${ACTION}" == "kubeval" ]]; then
     kubeval --strict --ignore-missing-schemas --kubernetes-version "${KUBE_VER}" "${TMPDIR}/${HELM_RELEASE_NAME}.release.yaml"
   elif [[ "${ACTION}" == "conftest" ]]; then
-    conftest -p policy test "${TMPDIR}/${HELM_RELEASE_NAME}.release.yaml"
+    conftest -p "${POLICY_DIR}" test "${TMPDIR}/${HELM_RELEASE_NAME}.release.yaml"
   else
     echo "No action specified - please set 5th argument to kubeval or conftest"
   fi
