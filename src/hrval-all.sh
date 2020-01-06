@@ -14,7 +14,7 @@ fi
 
 # If the path provided is actually a file, just run hrval against this one file
 if test -f "${DIR}"; then
-  ${HRVAL} ${DIR} ${IGNORE_VALUES} ${KUBE_VER} ${HELM_VER}
+  ${HRVAL} "${DIR}" "${IGNORE_VALUES}" "${KUBE_VER}" "${HELM_VER}"
   exit 0
 fi
 
@@ -25,7 +25,7 @@ if [ ! -d "$DIR" ]; then
 fi
 
 function isHelmRelease {
-  KIND=$(yq r ${1} kind)
+  KIND=$(yq r "${1}" kind)
   if [[ ${KIND} == "HelmRelease" ]]; then
       echo true
   else
@@ -34,11 +34,11 @@ function isHelmRelease {
 }
 
 # Find yaml files in directory recursively
-DIR_PATH=$(echo ${DIR} | sed "s/^\///;s/\/$//")
+DIR_PATH=$(echo "${DIR}" | sed "s/^\///;s/\/$//")
 FILES_TESTED=0
-for f in `find ${DIR} -type f -name '*.yaml' -or -name '*.yml'`; do
+for f in $(find "${DIR}" -type f -name '*.yaml' -or -name '*.yml'); do
   if [[ $(isHelmRelease ${f}) == "true" ]]; then
-    ${HRVAL} ${f} ${IGNORE_VALUES} ${KUBE_VER} ${HELM_VER}
+    ${HRVAL} "${f}" "${IGNORE_VALUES}" "${KUBE_VER}" "${HELM_VER}"
     FILES_TESTED=$(( FILES_TESTED+1 ))
   else
     echo "Ignoring ${f} not a HelmRelease"

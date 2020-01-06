@@ -11,12 +11,19 @@ inputs:
   ignoreValues:
     description: 'When set to true HelmRelease values will be ignored'
     default: 'false'
+    required: false
   kubernetesVersion:
     description: 'Version of Kubernetes to validate against'
     default: 'master'
+    required: false
   helmVersion:
     description: 'Version of Helm to validate against'
     default: 'v2'
+    required: false
+  action:
+    description: 'Which tool to check the HelmRelease with'
+    default: 'kubeval'
+    required: false
 outputs:
   numFilesTested:
     description: The number of HelmRelease files which were tested
@@ -29,3 +36,4 @@ runs:
     - ${{ inputs.ignoreValues }}
     - ${{ inputs.kubernetesVersion }}
     - ${{ inputs.helmVersion }}
+    - ${{ inputs.action }}
